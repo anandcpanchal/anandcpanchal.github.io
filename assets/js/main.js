@@ -7,6 +7,33 @@
 !(function($) {
   "use strict";
 
+  // Theme Toggle
+  function setTheme(theme) {
+    $('body').attr('data-theme', theme);
+    localStorage.setItem('theme', theme);
+    var icon = $('#theme-toggle i');
+    if (theme === 'dark') {
+      icon.removeClass('bx-moon').addClass('bx-sun');
+    } else {
+      icon.removeClass('bx-sun').addClass('bx-moon');
+    }
+  }
+
+  var currentTheme = localStorage.getItem('theme');
+  if (!currentTheme) {
+    if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+      currentTheme = 'dark';
+    } else {
+      currentTheme = 'light';
+    }
+  }
+  setTheme(currentTheme);
+
+  $(document).on('click', '#theme-toggle', function() {
+    var newTheme = $('body').attr('data-theme') === 'dark' ? 'light' : 'dark';
+    setTheme(newTheme);
+  });
+
   // Preloader
   $(window).on('load', function() {
     if ($('#preloader').length) {
